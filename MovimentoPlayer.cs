@@ -2,27 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement; //manipulaÁ„o de cenas
+using UnityEngine.SceneManagement; //manipula√ß√£o de cenas
 
 public class MovimentoPlayer : MonoBehaviour
 {
-    Rigidbody2D rbPlayer; //vari·vel do componente rigidbody
-    //[SerializeField] È exibida apenas no inspetor
-    [SerializeField] float speed = 5f; //vari·vel velocidade
+    Rigidbody2D rbPlayer; //vari√°vel do componente rigidbody
+    //[SerializeField] √© exibida apenas no inspetor, evita aparecer atributos e variaveis publicos
+    [SerializeField] float speed = 5f; //vari√°vel velocidade
     [SerializeField] float jumpForce = 5f;
-    [SerializeField] bool isJump; //verifica se o player est· pulando ou n„o
-    [SerializeField] bool inFloor = true; //verifica se o player est· no ch„o ou n„o
-    [SerializeField] Transform groundCheck; //referencia objeto de checagem do ch„o
-    [SerializeField] LayerMask groundLayer; //m·scara de camada especÌfica
+    [SerializeField] bool isJump; //verifica se o player est√° pulando ou n√£o
+    [SerializeField] bool inFloor = true; //verifica se o player est√° no ch√£o ou n√£o
+    [SerializeField] Transform groundCheck; //referencia objeto de checagem do ch√£o
+    [SerializeField] LayerMask groundLayer; //m√°scara de camada espec√≠fica
 
-    private void Awake() //mÈtodo chamado antes do start; armazena o componente rigidbody
+    private void Awake() //m√©todo chamado antes do start; armazena o componente rigidbody
     {
         rbPlayer = GetComponent<Rigidbody2D>();
     }
 
-    private void Update() //adiÁ„o de jump e linha de colis„o
+    private void Update() //adi√ß√£o de jump e linha de colis√£o
     {
-        inFloor = Physics2D.Linecast(transform.position, groundCheck.position, groundLayer); //Physics2D classe geral. Linha que liga o inicio ao fim. groundLayer verifica a colis„o da linha
+        inFloor = Physics2D.Linecast(transform.position, groundCheck.position, groundLayer); //Physics2D classe geral. Linha que liga o inicio ao fim. groundLayer verifica a colis√£o da linha
         Debug.DrawLine(transform.position, groundCheck.position, Color.blue);
 
         if (Input.GetButtonDown("Jump") && inFloor)
@@ -35,7 +35,7 @@ public class MovimentoPlayer : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() //puxa mÈtodos
+    private void FixedUpdate() //puxa m√©todos
     {
         Move();
         JumpPlayer();
@@ -43,15 +43,15 @@ public class MovimentoPlayer : MonoBehaviour
 
     void Move()
     {
-        //vari·vel para movimento horizontal
+        //vari√°vel para movimento horizontal
         float xMove = Input.GetAxis("Horizontal"); //atribuir classe input
         
         //acessar propriedade velocidade
         rbPlayer.velocity = new Vector2(xMove * speed, rbPlayer.velocity.y);
 
-        if (xMove > 0)//verifica se È maior que 0 (virado p/ lado positivo - 0y) ou se È menor (virado p/ lado negativo - 180y)
+        if (xMove > 0)//verifica se √© maior que 0 (virado p/ lado positivo - 0y) ou se √© menor (virado p/ lado negativo - 180y)
         {
-            transform.eulerAngles = new Vector2(0, 0); //propriedade euler permite criar rotaÁıes
+            transform.eulerAngles = new Vector2(0, 0); //propriedade euler permite criar rota√ß√µes
         }
         else if (xMove < 0)
         {
@@ -59,7 +59,7 @@ public class MovimentoPlayer : MonoBehaviour
         }
     }
 
-    void JumpPlayer() //quando o player est· pulando
+    void JumpPlayer() //quando o player est√° pulando
     {
         if (isJump)
         {
@@ -70,16 +70,16 @@ public class MovimentoPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) //morte oceandraco
     {
-        if (collision.gameObject.tag == "Inimigo") //se tiver colis„o com o inimigo
+        if (collision.gameObject.tag == "Inimigo") //se tiver colis√£o com o inimigo
         {
             rbPlayer.velocity = Vector2.zero; //zera sua velocidade
-            rbPlayer.AddForce(Vector2.up * 5, ForceMode2D.Impulse); //adiciona forÁa apenas ao eixo y (vertical). Ao colidir com o inimigo da um pequeno impulso
-            collision.gameObject.GetComponent<SpriteRenderer>().flipY = true; //ele vira o inimgo de cabeÁa para baixo
+            rbPlayer.AddForce(Vector2.up * 5, ForceMode2D.Impulse); //adiciona for√ßa apenas ao eixo y (vertical). Ao colidir com o inimigo da um pequeno impulso
+            collision.gameObject.GetComponent<SpriteRenderer>().flipY = true; //ele vira o inimgo de cabe√ßa para baixo
             collision.gameObject.GetComponent<Oceandraco>().enabled = false; //desabilita o script do inimigo
             collision.gameObject.GetComponent<CapsuleCollider2D>().enabled = false; //desabilita a capsula do inimigo
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false; //desabilita a caixa de colis„o
+            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false; //desabilita a caixa de colis√£o
             collision.gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic; //pega o corpo rigido e transforma em cinematica com tipo de corpo
-            Destroy(collision.gameObject, 1f); //destrÛi apÛs 1s
+            Destroy(collision.gameObject, 1f); //destr√≥i ap√≥s 1s
         }
     }
 
